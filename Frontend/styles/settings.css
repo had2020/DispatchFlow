@@ -9,6 +9,7 @@ body {
 
 .body_text {
     color: lightgray;
+    text-align: center;
 }
 
 .nav_bar {
@@ -35,6 +36,8 @@ body {
     border: 10px;
     border-radius: 30px;
     background-color: black;
+    margin: 5px;
+    padding: 10px;
 }
 
 .Settings_Button:hover {

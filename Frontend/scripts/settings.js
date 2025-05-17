@@ -1,0 +1,54 @@
+if (!localStorage.getItem("is_user")) {
+  window.location.href = "../guest_pages/home.html";
+}
+
+function Erase_User_Data() {
+  fetch("http://localhost:8000/send_clear", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      user: localStorage.getItem("User"),
+      pass: localStorage.getItem("Pass"),
+    }),
+  })
+    .then((response) => response.text())
+    .then((data) => {
+      status_data = data;
+
+      if (status_data == "cleared") {
+        localStorage.setItem("is_user", false);
+        localStorage.setItem("User", "");
+        localStorage.setItem("Pass", "");
+        localStorage.clear();
+        window.location.href = "../guest_pages/home.html";
+      }
+      if (status_data == "failed") {
+        alert("Failure with server response!");
+      }
+
+      console.log(status_data);
+    });
+}
+
+const button = document.getElementById("Erase");
+button.addEventListener("click", Erase_User_Data);
+
+//Logout User
+function Logout_User() {
+  if (confirm("Clear User Data")) {
+    localStorage.setItem("is_user", false);
+    localStorage.setItem("User", "");
+    localStorage.setItem("Pass", "");
+    localStorage.clear();
+
+    window.location.href = "../guest_pages/home.html";
+  }
+}
+
+const button1 = document.getElementById("Logout");
+button.addEventListener("click", Logout_User);
+
+//Privacy Policy
+//TODO

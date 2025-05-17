@@ -7,7 +7,7 @@ use rocket::{
 
 pub mod sql_actions;
 
-use sql_actions::{already_user, create_user, is_user};
+use sql_actions::{already_user, clear_user, create_user, is_user};
 
 #[derive(Deserialize)]
 #[serde(crate = "rocket::serde")]
@@ -16,6 +16,7 @@ struct AccountAction {
     pass: String,
 }
 
+// Signup Route
 #[post("/send_signup", format = "json", data = "<message>")]
 fn post_signup(message: Json<AccountAction>) -> String {
     let response = format!("{}, {}", message.user, message.pass);
@@ -34,6 +35,7 @@ fn options_send_signup() -> &'static str {
     ""
 }
 
+// Login Route
 #[post("/send_login", format = "json", data = "<message>")]
 fn post_login(message: Json<AccountAction>) -> String {
     let response = format!("{}, {}", message.user, message.pass);
@@ -47,6 +49,23 @@ fn post_login(message: Json<AccountAction>) -> String {
 
 #[options("/send_login")]
 fn options_send_login() -> &'static str {
+    ""
+}
+
+// Clear User Route
+#[post("/send_clear", format = "json", data = "<message>")]
+fn post_clear(message: Json<AccountAction>) -> String {
+    let response = format!("{}, {}", message.user, message.pass);
+
+    if clear_user(message.user.clone()) {
+        "cleared".to_string()
+    } else {
+        "failed".to_string()
+    }
+}
+
+#[options("/send_clear")]
+fn options_send_clear() -> &'static str {
     ""
 }
 
@@ -82,7 +101,9 @@ fn rocket() -> _ {
             post_signup,
             options_send_signup,
             post_login,
-            options_send_login
+            options_send_login,
+            post_clear,
+            options_send_clear
         ],
     )
 }

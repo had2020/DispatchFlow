@@ -45,7 +45,6 @@ pub fn create_user(username: String, password: String) {
 pub fn is_user(username: String, password: String) -> bool {
     let conn = Connection::open("database.db").unwrap();
 
-    // Create accounts table if not exists
     conn.execute(
         "CREATE TABLE IF NOT EXISTS accounts (
             username TEXT NOT NULL,
@@ -64,4 +63,16 @@ pub fn is_user(username: String, password: String) -> bool {
         .unwrap();
 
     count > 0
+}
+
+pub fn clear_user(username: String) -> bool {
+    let conn = Connection::open("database.db").unwrap();
+
+    conn.execute(
+        "DELETE FROM accounts WHERE username = ?1",
+        params![username],
+    )
+    .unwrap();
+
+    true
 }
