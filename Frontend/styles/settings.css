@@ -1,0 +1,60 @@
+body {
+    background-color: #333;
+}
+
+.title {
+    text-align: center;
+    color: white;
+}
+
+.body_text {
+    color: lightgray;
+}
+
+.nav_bar {
+    text-align: center;
+}
+
+.nav_button {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    background-color: #222;
+    border: 5px;
+    border-radius: 10px;
+}
+
+.nav_button:hover {
+    background-color: #444;
+    border-color: white;
+    color: black;
+}
+
+.Settings_Button {
+    color: white;
+    border: 10px;
+    border-radius: 30px;
+    background-color: black;
+}
+
+.Settings_Button:hover {
+    border: 10px;
+    border-radius: 30px;
+    background-color: #444;
+    border-color: white;
+    color: black;
+}
+
+.button_holder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 10px;
+    border-radius: 30px;
+    background-color: #222;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}

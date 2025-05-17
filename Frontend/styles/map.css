@@ -1,0 +1,22 @@
+body {
+    background-color: #333;
+}
+
+.nav_bar {
+    text-align: center;
+}
+
+.nav_button {
+    color: white;
+    text-decoration: none;
+    padding: 5px;
+    background-color: #222;
+    border: 5px;
+    border-radius: 10px;
+}
+
+.nav_button:hover {
+    background-color: #444;
+    border-color: white;
+    color: black;
+}
