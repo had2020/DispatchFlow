@@ -21,7 +21,7 @@ document.getElementById("Join_button").addEventListener("click", function () {
   if (!localStorage.getItem("is_user")) {
     window.location.href = "../guest_pages/home.html";
   } else {
-    fetch("http://localhost:8000/join_team", {
+    fetch("http://76.167.195.153:8000/join_team", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +63,7 @@ document.getElementById("Create_button").addEventListener("click", function () {
   if (!localStorage.getItem("is_user")) {
     window.location.href = "../guest_pages/home.html";
   } else {
-    fetch("http://localhost:8000/create_team", {
+    fetch("http://76.167.195.153:8000/create_team", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -2,7 +2,7 @@ if (localStorage.getItem("In_team") == "false") {
   window.location.href = "../user_pages/teams.html";
 }
 
-fetch("http://localhost:8000/check_chat", {
+fetch("http://76.167.195.153:8000/check_chat", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -50,7 +50,7 @@ document.getElementById("Send").addEventListener("click", function () {
 
   let status_data = "";
 
-  fetch("http://localhost:8000/send_chat_message", {
+  fetch("http://76.167.195.153:8000/send_chat_message", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
