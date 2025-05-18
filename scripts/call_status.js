@@ -5,7 +5,6 @@ document.getElementById("Reload").addEventListener("click", function () {
 });
 
 fetch("https://76.167.195.153:8000/check_all_status", {
-  referrerPolicy: "unsafe-url",
   method: "POST",
   headers: {
     "Content-Type": "application/json",

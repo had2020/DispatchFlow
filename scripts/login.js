@@ -8,7 +8,6 @@ document.getElementById("Submit").addEventListener("click", function () {
     window.location.href = "../user_pages/map.html";
   } else {
     fetch("https://76.167.195.153:8000/send_login", {
-      referrerPolicy: "unsafe-url",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
