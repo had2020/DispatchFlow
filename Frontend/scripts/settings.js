@@ -21,7 +21,11 @@ function Erase_User_Data() {
         localStorage.setItem("is_user", false);
         localStorage.setItem("User", "");
         localStorage.setItem("Pass", "");
+        localStorage.setItem("In_team", false);
+        localStorage.setItem("Team_name", "");
+        localStorage.setItem("Team_code", "");
         localStorage.clear();
+        localStorage.setItem("In_team", false);
         window.location.href = "../guest_pages/home.html";
       }
       if (status_data == "failed") {
@@ -37,18 +41,15 @@ button.addEventListener("click", Erase_User_Data);
 
 //Logout User
 function Logout_User() {
-  if (confirm("Clear User Data")) {
-    localStorage.setItem("is_user", false);
-    localStorage.setItem("User", "");
-    localStorage.setItem("Pass", "");
-    localStorage.clear();
+  localStorage.setItem("is_user", false);
+  localStorage.setItem("User", "");
+  localStorage.setItem("Pass", "");
 
-    window.location.href = "../guest_pages/home.html";
-  }
+  window.location.href = "../guest_pages/home.html";
 }
 
 const button1 = document.getElementById("Logout");
-button.addEventListener("click", Logout_User);
+button1.addEventListener("click", Logout_User);
 
 //Privacy Policy
 //TODO
