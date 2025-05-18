@@ -84,7 +84,7 @@ document.getElementById("duty_button").addEventListener("click", function () {
     new_status = "true";
   }
 
-  fetch("http://76.167.195.153:8000/send_on_call", {
+  fetch("https://76.167.195.153:8000/send_on_call", {
     referrerPolicy: "unsafe-url",
     method: "POST",
     headers: {
@@ -117,7 +117,7 @@ document.getElementById("duty_button").addEventListener("click", function () {
 });
 
 setInterval(() => {
-  fetch("http://76.167.195.153:8000/send_position", {
+  fetch("https://76.167.195.153:8000/send_position", {
     referrerPolicy: "unsafe-url",
     method: "POST",
     headers: {
@@ -137,7 +137,7 @@ setInterval(() => {
       console.log(status_data);
     });
 
-  fetch("http://76.167.195.153:8000/check_positions", {
+  fetch("https://76.167.195.153:8000/check_positions", {
     referrerPolicy: "unsafe-url",
     method: "POST",
     headers: {
