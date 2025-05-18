@@ -1,9 +1,0 @@
-[package]
-name = "ActiveServer"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-rand = "0.9.1"
-rocket = { version = "0.5.1", features = ["json"] }
-rusqlite = "0.35.0"
