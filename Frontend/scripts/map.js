@@ -84,7 +84,7 @@ document.getElementById("duty_button").addEventListener("click", function () {
     new_status = "true";
   }
 
-  fetch("https://76.167.195.153:8000/send_on_call", {
+  fetch("http://76.167.195.153:8000/send_on_call", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -116,7 +116,7 @@ document.getElementById("duty_button").addEventListener("click", function () {
 });
 
 setInterval(() => {
-  fetch("https://76.167.195.153:8000/send_position", {
+  fetch("http://76.167.195.153:8000/send_position", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -135,7 +135,7 @@ setInterval(() => {
       console.log(status_data);
     });
 
-  fetch("https://76.167.195.153:8000/check_positions", {
+  fetch("http://76.167.195.153:8000/check_positions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

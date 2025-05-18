@@ -4,7 +4,7 @@ document.getElementById("Reload").addEventListener("click", function () {
   window.location.reload();
 });
 
-fetch("https://76.167.195.153:8000/check_all_status", {
+fetch("http://76.167.195.153:8000/check_all_status", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
