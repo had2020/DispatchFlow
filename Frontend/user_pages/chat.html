@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+    <head>
+        <title>DispatchFlow</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="../styles/chat.css" />
+        <link rel="icon" href="../assets/favicon.png" type="image/png" />
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet/dist/leaflet.css"
+        />
+        <style>
+            #map {
+                height: 500px;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="nav_bar">
+            <a href="map.html" class="nav_button">🗺️ Map</a>
+            <a href="chat.html" class="nav_button">💬 Chat</a>
+            <a href="call_status.html" class="nav_button">📲 Status</a>
+            <a href="teams.html" class="nav_button">🏘️ Teams</a>
+            <a href="settings.html" class="nav_button">⚙️ Settings</a>
+        </nav>
+
+        <h1 class="title">Team Chat</h1>
+
+        <div class="chat-container">
+            <div class="chat-messages"></div>
+
+            <div class="chat-input">
+                <input
+                    id="Message_input"
+                    type="text"
+                    placeholder="Type your message..."
+                />
+                <button id="Send">Send</button>
+                <button id="Reload">Reload</button>
+            </div>
+        </div>
+
+        <script src="../scripts/chat.js"></script>
+    </body>
+</html>

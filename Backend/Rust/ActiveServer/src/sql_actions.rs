@@ -203,14 +203,146 @@ pub fn check_all_team_status(team_name: String) -> String {
     .unwrap();
 
     let mut statement = conn
-        .prepare("SELECT username FROM user_status WHERE team_name = ?1")
+        .prepare("SELECT username, status FROM user_status WHERE team_name = ?1")
         .unwrap();
 
-    let usernames: Vec<String> = statement
-        .query_map([team_name], |row| row.get(0))
+    let users: Vec<(String, String)> = statement
+        .query_map([team_name], |row| {
+            let username: String = row.get(0)?;
+            let status: String = row.get(1)?;
+            Ok((username, status))
+        })
         .unwrap()
         .filter_map(Result::ok)
         .collect();
 
-    usernames.join(", ")
+    let mut formatted_users = Vec::new();
+    for (username, status) in users {
+        if status == "true" {
+            formatted_users.push(format!("{} ({})", username, "On Duty"));
+        } else {
+            formatted_users.push(format!("{} ({})", username, "Off Duty"));
+        }
+    }
+
+    formatted_users.join(", ")
+}
+
+pub fn add_chat_message(user: String, team_name: String, message: String) {
+    let conn = Connection::open("database.db").unwrap();
+
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS team_chats (
+            username TEXT NOT NULL,
+            team_name TEXT NOT NULL,
+            message TEXT NOT NULL
+        )",
+        [],
+    )
+    .unwrap();
+
+    conn.execute(
+        "INSERT INTO team_chats (username, team_name, message) VALUES (?1, ?2, ?3)",
+        params![user, team_name, message],
+    )
+    .unwrap();
+}
+
+pub fn check_team_chat(team_name: String) -> String {
+    let conn = Connection::open("database.db").unwrap();
+
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS team_chats (
+            username TEXT NOT NULL,
+            team_name TEXT NOT NULL,
+            message TEXT NOT NULL
+        )",
+        [],
+    )
+    .unwrap();
+
+    let mut statement = conn
+        .prepare("SELECT username, message FROM team_chats WHERE team_name = ?1")
+        .unwrap();
+
+    let users: Vec<(String, String)> = statement
+        .query_map([team_name], |row| {
+            let username: String = row.get(0)?;
+            let message_text: String = row.get(1)?;
+            Ok((username, message_text))
+        })
+        .unwrap()
+        .filter_map(Result::ok)
+        .collect();
+
+    let mut formatted_users = Vec::new();
+    for (username, message_text) in users {
+        formatted_users.push(format!("{} Sent: {}", username, message_text));
+    }
+
+    formatted_users.join(", ")
+}
+
+pub fn add_position(username: String, team_name: String, latitude: String, longitude: String) {
+    let conn = Connection::open("database.db").unwrap();
+
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS locations (
+            username TEXT NOT NULL,
+            team_name TEXT NOT NULL,
+            latitude TEXT NOT NULL,
+            longitude TEXT NOT NULL
+        )",
+        [],
+    )
+    .unwrap();
+
+    conn.execute(
+        "DELETE FROM locations WHERE username = ?1",
+        params![username],
+    )
+    .unwrap();
+
+    conn.execute(
+        "INSERT INTO locations (username, team_name, latitude, longitude) VALUES (?1, ?2, ?3, ?4)",
+        params![username, team_name, latitude, longitude],
+    )
+    .unwrap();
+}
+
+pub fn check_team_positions(team_name: String) -> String {
+    let conn = Connection::open("database.db").unwrap();
+
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS locations (
+            username TEXT NOT NULL,
+            team_name TEXT NOT NULL,
+            latitude TEXT NOT NULL,
+            longitude TEXT NOT NULL
+        )",
+        [],
+    )
+    .unwrap();
+
+    let mut statement = conn
+        .prepare("SELECT username, latitude, longitude  FROM locations WHERE team_name = ?1")
+        .unwrap();
+
+    let users: Vec<(String, String, String)> = statement
+        .query_map([team_name], |row| {
+            let username: String = row.get(0)?;
+            let latitude: String = row.get(1)?;
+            let longitude: String = row.get(2)?;
+            Ok((username, latitude, longitude))
+        })
+        .unwrap()
+        .filter_map(Result::ok)
+        .collect();
+
+    let mut formatted_users = Vec::new();
+    for (username, latitude, longitude) in users {
+        formatted_users.push(format!("{}: {}: {}", username, latitude, longitude));
+    }
+
+    formatted_users.join(", ")
 }

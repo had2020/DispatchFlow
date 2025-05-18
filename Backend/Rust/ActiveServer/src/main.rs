@@ -12,8 +12,9 @@ use std::io::Write;
 pub mod sql_actions;
 
 use sql_actions::{
-    already_user, check_all_team_status, check_duty_status, clear_user, create_team, create_user,
-    is_user, join_team, set_duty_status,
+    add_chat_message, add_position, already_user, check_all_team_status, check_duty_status,
+    check_team_chat, check_team_positions, clear_user, create_team, create_user, is_user,
+    join_team, set_duty_status,
 };
 
 #[derive(Deserialize)]
@@ -39,6 +40,23 @@ struct DutyAction {
     user: String,
     team_name: String,
     status: String,
+}
+
+#[derive(Deserialize)]
+#[serde(crate = "rocket::serde")]
+struct ChatAction {
+    user: String,
+    team_name: String,
+    message: String,
+}
+
+#[derive(Deserialize)]
+#[serde(crate = "rocket::serde")]
+struct PositionAction {
+    user: String,
+    team_name: String,
+    latitude: String,
+    longitude: String,
 }
 
 // Signup Route
@@ -184,6 +202,61 @@ fn options_check_all_status() -> &'static str {
     ""
 }
 
+// Send Chat Message
+#[post("/send_chat_message", format = "json", data = "<message>")]
+fn send_chat_message(message: Json<ChatAction>) -> String {
+    add_chat_message(
+        message.user.clone(),
+        message.team_name.clone(),
+        message.message.clone(),
+    );
+    "sent".to_string()
+}
+
+#[options("/send_chat_message")]
+fn options_send_chat_message() -> &'static str {
+    ""
+}
+
+// Check Chat
+#[post("/check_chat", format = "json", data = "<message>")]
+fn check_chat(message: Json<ChatAction>) -> String {
+    check_team_chat(message.team_name.clone())
+}
+
+#[options("/check_chat")]
+fn options_check_team_chat() -> &'static str {
+    ""
+}
+
+// Send Position
+#[post("/send_position", format = "json", data = "<message>")]
+fn send_position(message: Json<PositionAction>) -> String {
+    add_position(
+        message.user.clone(),
+        message.team_name.clone(),
+        message.latitude.clone(),
+        message.longitude.clone(),
+    );
+    "Sent Position".to_string()
+}
+
+#[options("/send_position")]
+fn options_send_position() -> &'static str {
+    ""
+}
+
+// Check Positions
+#[post("/check_positions", format = "json", data = "<message>")]
+fn check_positions(message: Json<PositionAction>) -> String {
+    check_team_positions(message.team_name.clone())
+}
+
+#[options("/check_positions")]
+fn options_check_positions() -> &'static str {
+    ""
+}
+
 // CORS
 pub struct CORS;
 
@@ -244,7 +317,15 @@ fn rocket() -> _ {
             check_on_call,
             options_check_on_call,
             check_all_status,
-            options_check_all_status
+            options_check_all_status,
+            send_chat_message,
+            options_send_chat_message,
+            check_chat,
+            options_check_team_chat,
+            send_position,
+            options_send_position,
+            check_positions,
+            options_check_positions
         ],
     )
 }

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DispatchFlow</title>
+        <link rel="stylesheet" href="../styles/docs.css" />
+        <link rel="icon" href="../assets/favicon.png" type="image/png" />
+    </head>
+    <body>
+        <nav class="nav_bar">
+            <a href="home.html" class="nav_button">🏠 Home</a>
+            <a href="docs.html" class="nav_button">📖 Docs</a>
+            <a href="login.html" class="nav_button">🔑 Login</a>
+            <a href="signup.html" class="nav_button">🔐 Signup</a>
+            <a href="Privacy_Policy.html" class="nav_button"
+                >📝 Privacy Policy</a
+            >
+        </nav>
+
+        <h1 class="title">Docs</h1>
+
+        <p class="body_text">
+            This documentation assumes that you wish to establish your own
+            version of the website for your team of people.
+        </p>
+
+        <p class="body_text">
+            This documentation also requires that you have some sort of computer
+            and a route to run the server, so that your browser can connect to
+            it. Hence why you wish to set up your node.
+        </p>
+
+        <p style="color: white; text-align: center">
+            Server/Node <b>Minimum requirements</b>
+        </p>
+
+        <p class="body_text">
+            Hardware: 64-bit CPU with at least One Gigabyte of Ram.
+        </p>
+
+        <p class="body_text">
+            Software: Operating system with a package manager like Linux.
+        </p>
+
+        <p style="color: white; text-align: center">First Steps</p>
+
+        <p class="body_text">
+            Keep in mind sudo apt install will not work for each Linux distro.
+            Ubuntu based such as the one's that get installed on a Rasiberry pi
+            have apt package installer.
+        </p>
+
+        <p class="body_text">
+            You can type commands in the termial in order to install the
+            packages, which the server requires.
+        </p>
+
+        <p class="body_text">
+            Type this command to install more recent syste packages, to uphold
+            system cohesion.
+        </p>
+
+        <p class="blue_body_text">sudo apt update</p>
+
+        <p class="body_text">
+            Next we create a folder for the server and then enter it.
+        </p>
+
+        <p class="blue_body_text">mkdir dispatch_server</p>
+
+        <p class="blue_body_text">cd dispatch_server</p>
+
+        <p class="body_text">Then we download the DispatchFlow server</p>
+
+        <p class="blue_body_text">
+            wget https://github.com/had2020/DispatchFlow.git
+        </p>
+
+        <p style="color: white; text-align: center">Preping your OS</p>
+
+        <p class="body_text">
+            Installing Rust programming langauge to run the server.
+        </p>
+
+        <p class="blue_body_text">
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        </p>
+
+        <p class="blue_body_text">source $HOME/.cargo/env</p>
+
+        <p class="body_text">installing SQLlite</p>
+
+        <p class="blue_body_text">sudo apt install sqlite3</p>
+
+        <p style="color: white; text-align: center">Running the server</p>
+
+        <p class="blue_body_text">
+            ROCKET_ADDRESS=REPLACE_WITH_IPV4_ADDRESS
+            ROCKET_PORT=REPLACE_WITH_OPENED_PORT cargo run
+        </p>
+
+        <p class="body_text">
+            Note you must replace the text, REPLACE_WITH_IPV4_ADDRESS with your
+            networks Ipv4 address and REPLACE_WITH_OPENED_PORT with the NAT
+            fowarded port
+        </p>
+
+        <script src="../scripts/main.js"></script>
+    </body>
+</html>

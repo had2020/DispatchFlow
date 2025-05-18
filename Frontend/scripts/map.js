@@ -1,28 +1,71 @@
-let user_latitude = 0;
-let user_longitude = 0;
+let lat = 0;
+let lon = 0;
+
+let other_user_points;
+
+let map;
+let userMarker;
+let isMapInitialized = false;
 
 function getLocation() {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(success, error);
+    navigator.geolocation.watchPosition(success, error, {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 10000,
+    });
   } else {
-    alert("Geolocation is not supported by this browser.");
+    alert("GPS is not supported, by this browser!");
   }
 }
 
 function success(position) {
-  console.log(position.coords.latitude + ", " + position.coords.longitude);
-  user_latitude = position.coords.latitude;
-  user_longitude = position.coords.longitude;
+  lat = position.coords.latitude;
+  lon = position.coords.longitude;
+  console.log("User Location: ", lat, lon);
 
-  let map = L.map("map").setView([user_latitude, user_longitude], 17); // third parameter is zoom
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-  }).addTo(map);
-  var marker = L.marker([user_latitude, user_longitude]).addTo(map);
+  if (!isMapInitialized) {
+    map = L.map("map", {
+      zoomControl: true,
+    }).setView([lat, lon], 17);
+
+    L.tileLayer(
+      "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+      {
+        attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+        maxZoom: 30,
+      },
+    ).addTo(map);
+
+    isMapInitialized = true;
+  }
+
+  if (!userMarker) {
+    userMarker = L.circle([lat, lon], {
+      color: "red",
+      fillColor: "#f03",
+      fillOpacity: 0.3,
+      radius: 10,
+    }).addTo(map);
+  } else {
+    userMarker.setLatLng([lat, lon]);
+  }
+
+  //map.setView([lat, lon]);
 }
 
-function error() {
-  alert("Sorry, no position available.");
+function error(err) {
+  console.error(`ERROR(${err.code}): ${err.message}`);
+  alert("Failed to get your location.");
+}
+
+function addMarker(lat, lon, label = "Marker") {
+  L.marker([lat, lon], {
+    title: label,
+  })
+    .addTo(map)
+    .bindPopup(label)
+    .openPopup();
 }
 
 getLocation();
@@ -48,7 +91,7 @@ document.getElementById("duty_button").addEventListener("click", function () {
     },
     body: JSON.stringify({
       user: localStorage.getItem("User"),
-      team_name: localStorage.getItem("Pass"),
+      team_name: localStorage.getItem("Team_name"),
       status: new_status,
     }),
   })
@@ -71,3 +114,66 @@ document.getElementById("duty_button").addEventListener("click", function () {
       console.log(status_data);
     });
 });
+
+setInterval(() => {
+  fetch("http://localhost:8000/send_position", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      user: localStorage.getItem("User"),
+      team_name: localStorage.getItem("Team_name"),
+      latitude: lat.toString(),
+      longitude: lon.toString(),
+    }),
+  })
+    .then((response) => response.text())
+    .then((data) => {
+      status_data = data;
+
+      console.log(status_data);
+    });
+
+  fetch("http://localhost:8000/check_positions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      user: "",
+      team_name: localStorage.getItem("Team_name"),
+      latitude: "",
+      longitude: "",
+    }),
+  })
+    .then((response) => response.text())
+    .then((data) => {
+      status_data = data;
+
+      let entries = status_data.split(",");
+
+      let parsed = entries.map((entry) => {
+        let parts = entry
+          .trim()
+          .split(":")
+          .map((s) => s.trim());
+        return {
+          name: parts[0],
+          lat: parseFloat(parts[1]),
+          lon: parseFloat(parts[2]),
+        };
+      });
+
+      for (let point of parsed) {
+        if (point.name != localStorage.getItem("User")) {
+          console.log(
+            `${point.name} is at latitude ${point.lat} and longitude ${point.lon}`,
+          );
+          addMarker(point.lat, point.lon, point.name);
+        }
+      }
+
+      console.log(status_data);
+    });
+}, 10000);

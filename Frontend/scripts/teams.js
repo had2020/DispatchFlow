@@ -2,7 +2,7 @@ if (localStorage.getItem("is_user") == false) {
   window.location.href = "../guest_pages/home.html";
 }
 
-if (localStorage.getItem("In_team") != "false") {
+if (localStorage.getItem("In_team") == "true") {
   window.location.href = "../user_pages/in_teams.html";
 }
 
@@ -40,7 +40,7 @@ document.getElementById("Join_button").addEventListener("click", function () {
 
         if (status_data !== null && status_data !== "") {
           alert("👋 Welcome to the team!");
-          localStorage.setItem("In_team", true);
+          localStorage.setItem("In_team", "true");
           localStorage.setItem("Team_name", status_data);
           localStorage.setItem("Team_code", teams_code);
 
@@ -81,7 +81,7 @@ document.getElementById("Create_button").addEventListener("click", function () {
         status_data = data;
 
         if (status_data !== null && status_data !== "Already") {
-          localStorage.setItem("In_team", true);
+          localStorage.setItem("In_team", "true");
           localStorage.setItem("Team_name", team_name);
           localStorage.setItem("Team_code", status_data);
           alert("Created Team!");

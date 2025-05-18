@@ -8,7 +8,13 @@ body {
 }
 
 .body_text {
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
     color: lightgray;
+    background-color: #111;
+    border: 10px;
+    border-radius: 20px;
 }
 
 .nav_bar {
@@ -28,4 +34,19 @@ body {
     background-color: #444;
     border-color: white;
     color: black;
+}
+
+.list_box {
+    background-color: #222;
+    border: 10px;
+    border-radius: 20px;
+}
+
+.list_item {
+    padding: 10px;
+    margin: 10px;
+    color: lightgray;
+    background-color: #111;
+    border: 10px;
+    border-radius: 20px;
 }
