@@ -4,6 +4,7 @@ if (!localStorage.getItem("is_user")) {
 
 function Erase_User_Data() {
   fetch("http://76.167.195.153:8000/send_clear", {
+    referrerPolicy: "unsafe-url",
     method: "POST",
     headers: {
       "Content-Type": "application/json",

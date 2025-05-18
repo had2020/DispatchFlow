@@ -85,6 +85,7 @@ document.getElementById("duty_button").addEventListener("click", function () {
   }
 
   fetch("http://76.167.195.153:8000/send_on_call", {
+    referrerPolicy: "unsafe-url",
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -117,6 +118,7 @@ document.getElementById("duty_button").addEventListener("click", function () {
 
 setInterval(() => {
   fetch("http://76.167.195.153:8000/send_position", {
+    referrerPolicy: "unsafe-url",
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -136,6 +138,7 @@ setInterval(() => {
     });
 
   fetch("http://76.167.195.153:8000/check_positions", {
+    referrerPolicy: "unsafe-url",
     method: "POST",
     headers: {
       "Content-Type": "application/json",

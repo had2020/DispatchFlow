@@ -22,6 +22,7 @@ document.getElementById("Join_button").addEventListener("click", function () {
     window.location.href = "../guest_pages/home.html";
   } else {
     fetch("http://76.167.195.153:8000/join_team", {
+      referrerPolicy: "unsafe-url",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -64,6 +65,7 @@ document.getElementById("Create_button").addEventListener("click", function () {
     window.location.href = "../guest_pages/home.html";
   } else {
     fetch("http://76.167.195.153:8000/create_team", {
+      referrerPolicy: "unsafe-url",
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -3,6 +3,7 @@ if (localStorage.getItem("In_team") == "false") {
 }
 
 fetch("http://76.167.195.153:8000/check_chat", {
+  referrerPolicy: "unsafe-url",
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -51,6 +52,7 @@ document.getElementById("Send").addEventListener("click", function () {
   let status_data = "";
 
   fetch("http://76.167.195.153:8000/send_chat_message", {
+    referrerPolicy: "unsafe-url",
     method: "POST",
     headers: {
       "Content-Type": "application/json",
