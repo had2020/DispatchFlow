@@ -25,3 +25,12 @@ body {
     border-color: white;
     color: black;
 }
+
+.duty_list {
+    font-size: 20px;
+    text-align: center;
+    color: lightgray;
+    background-color: #222;
+    border: 5px;
+    border-radius: 10px;
+}

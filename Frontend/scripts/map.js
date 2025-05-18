@@ -26,3 +26,5 @@ function error() {
 }
 
 getLocation();
+
+// report for duty

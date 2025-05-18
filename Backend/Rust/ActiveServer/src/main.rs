@@ -101,6 +101,36 @@ fn options_join_team() -> &'static str {
     ""
 }
 
+/*
+struct Position {
+    latitude: f32,
+    longitude: f32,
+}
+
+struct TeamDuty {
+    team_name: String,
+    founder_username: String,
+    users: Vec<UserDuty>,
+}
+
+struct UserDuty {
+    username: String,
+    online: bool,
+    position: Position,
+}
+*/
+
+// Resister for call
+#[post("/get_on_call", format = "json", data = "<message>")]
+fn get_on_call(message: Json<TeamsAction>) -> String {
+    "no".to_string() //TODO do it in SQL
+}
+
+#[options("/get_on_call")]
+fn options_get_on_call() -> &'static str {
+    ""
+}
+
 // CORS
 pub struct CORS;
 
@@ -128,6 +158,21 @@ impl Fairing for CORS {
 
 #[launch]
 fn rocket() -> _ {
+    /*
+    let mut global_team_status: Vec<TeamDuty> = vec![TeamDuty {
+        team_name: "".to_string(),
+        founder_username: "".to_string(),
+        users: vec![UserDuty {
+            username: "".to_string(),
+            online: false,
+            position: Position {
+                latitude: 0.0,
+                longitude: 0.0,
+            },
+        }],
+    }];
+    */
+
     rocket::build().attach(CORS).mount(
         "/",
         routes![
@@ -140,7 +185,9 @@ fn rocket() -> _ {
             post_create_team,
             options_create_team,
             post_join_team,
-            options_join_team
+            options_join_team,
+            get_on_call,
+            options_get_on_call
         ],
     )
 }
