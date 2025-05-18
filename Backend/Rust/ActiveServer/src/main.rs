@@ -7,13 +7,23 @@ use rocket::{
 
 pub mod sql_actions;
 
-use sql_actions::{already_user, clear_user, create_user, is_user};
+use sql_actions::{already_user, clear_user, create_team, create_user, is_user, join_team};
 
 #[derive(Deserialize)]
 #[serde(crate = "rocket::serde")]
 struct AccountAction {
     user: String,
     pass: String,
+}
+
+#[derive(Deserialize)]
+#[serde(crate = "rocket::serde")]
+struct TeamsAction {
+    user: String,
+    pass: String,
+    action: String,
+    code: String,
+    team_name: String,
 }
 
 // Signup Route
@@ -38,8 +48,6 @@ fn options_send_signup() -> &'static str {
 // Login Route
 #[post("/send_login", format = "json", data = "<message>")]
 fn post_login(message: Json<AccountAction>) -> String {
-    let response = format!("{}, {}", message.user, message.pass);
-
     if is_user(message.user.clone(), message.pass.clone()) {
         "is_user".to_string()
     } else {
@@ -55,8 +63,6 @@ fn options_send_login() -> &'static str {
 // Clear User Route
 #[post("/send_clear", format = "json", data = "<message>")]
 fn post_clear(message: Json<AccountAction>) -> String {
-    let response = format!("{}, {}", message.user, message.pass);
-
     if clear_user(message.user.clone()) {
         "cleared".to_string()
     } else {
@@ -69,6 +75,33 @@ fn options_send_clear() -> &'static str {
     ""
 }
 
+// Create Team
+#[post("/create_team", format = "json", data = "<message>")]
+fn post_create_team(message: Json<TeamsAction>) -> String {
+    create_team(message.user.clone(), message.team_name.clone())
+}
+
+#[options("/create_team")]
+fn options_create_team() -> &'static str {
+    ""
+}
+
+// Join Team
+#[post("/join_team", format = "json", data = "<message>")]
+fn post_join_team(message: Json<TeamsAction>) -> String {
+    join_team(
+        message.user.clone(),
+        message.pass.clone(),
+        message.code.clone(),
+    )
+}
+
+#[options("/join_team")]
+fn options_join_team() -> &'static str {
+    ""
+}
+
+// CORS
 pub struct CORS;
 
 #[rocket::async_trait]
@@ -103,7 +136,11 @@ fn rocket() -> _ {
             post_login,
             options_send_login,
             post_clear,
-            options_send_clear
+            options_send_clear,
+            post_create_team,
+            options_create_team,
+            post_join_team,
+            options_join_team
         ],
     )
 }

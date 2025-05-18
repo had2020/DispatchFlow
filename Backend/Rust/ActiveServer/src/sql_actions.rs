@@ -1,3 +1,4 @@
+use rand::prelude::*;
 use rusqlite::{params, Connection, Result};
 
 pub fn already_user(username: String) -> bool {
@@ -75,4 +76,67 @@ pub fn clear_user(username: String) -> bool {
     .unwrap();
 
     true
+}
+
+pub fn create_team(username: String, team_name: String) -> String {
+    let conn = Connection::open("database.db").unwrap();
+
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS teams (
+            username TEXT NOT NULL,
+            team_name TEXT NOT NULL,
+            code TEXT NOT NULL
+        )",
+        [],
+    )
+    .unwrap();
+
+    let mut statement = conn
+        .prepare("SELECT COUNT(*) FROM teams WHERE username = ?1")
+        .unwrap();
+    let count: i64 = statement
+        .query_row(params![username], |row| row.get(0))
+        .unwrap_or(0);
+
+    if count == 0 {
+        // pusdeo random number gen
+        let mut code: String = "".to_string();
+
+        for i in 0..6 {
+            let number = rand::random_range(0..9);
+            code.push_str(&number.to_string());
+        }
+
+        conn.execute(
+            "INSERT INTO teams (username, team_name, code) VALUES (?1, ?2, ?3)",
+            params![username, team_name, code],
+        )
+        .unwrap();
+
+        code
+    } else {
+        "Already".to_string()
+    }
+}
+
+pub fn join_team(username: String, password: String, code: String) -> String {
+    let conn = Connection::open("database.db").unwrap();
+
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS teams (
+            username TEXT NOT NULL,
+            team_name TEXT NOT NULL,
+            code TEXT NOT NULL
+        )",
+        [],
+    )
+    .unwrap();
+
+    let mut statement = conn
+        .prepare("SELECT team_name FROM teams WHERE code = ?1")
+        .unwrap();
+
+    statement
+        .query_row(params![code], |row| row.get(0))
+        .unwrap_or_default()
 }

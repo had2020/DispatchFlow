@@ -1,0 +1,72 @@
+body {
+    background-color: #333;
+}
+
+.title {
+    text-align: center;
+    color: white;
+}
+
+.body_text {
+    color: lightgray;
+    text-align: center;
+    background-color: #222;
+    border: 10px;
+    border-radius: 20px;
+}
+
+.nav_bar {
+    text-align: center;
+}
+
+.nav_button {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    background-color: #222;
+    border: 5px;
+    border-radius: 10px;
+}
+
+.nav_button:hover {
+    background-color: #444;
+    border-color: white;
+    color: black;
+}
+
+.code_panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    align-items: center;
+}
+
+.code {
+    border: 1px;
+    border-radius: 5px;
+    width: 30%;
+    text-align: center;
+}
+
+.join_panel {
+    background-color: #222;
+    border: 10px;
+    border-radius: 5px;
+}
+
+.join_button {
+    margin: 20px;
+    padding: 10px;
+    background-color: gray;
+    border-radius: 10px;
+    border: 10px;
+}
+
+.join_button:hover {
+    margin: 20px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+    border: 10px;
+}
