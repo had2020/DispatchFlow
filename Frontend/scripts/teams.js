@@ -81,10 +81,11 @@ document.getElementById("Create_button").addEventListener("click", function () {
         status_data = data;
 
         if (status_data !== null && status_data !== "Already") {
-          alert("Created Team!");
           localStorage.setItem("In_team", true);
           localStorage.setItem("Team_name", team_name);
           localStorage.setItem("Team_code", status_data);
+          alert("Created Team!");
+          window.location.href = "../user_pages/in_teams.html";
         } else {
           if (status_data == "Already") {
             alert("Team name is already taken!");

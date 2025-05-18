@@ -12,8 +12,8 @@ use std::io::Write;
 pub mod sql_actions;
 
 use sql_actions::{
-    already_user, check_duty_status, clear_user, create_team, create_user, is_user, join_team,
-    set_duty_status,
+    already_user, check_all_team_status, check_duty_status, clear_user, create_team, create_user,
+    is_user, join_team, set_duty_status,
 };
 
 #[derive(Deserialize)]
@@ -173,6 +173,17 @@ fn options_check_on_call() -> &'static str {
     ""
 }
 
+// Check all team members status
+#[post("/check_all_status", format = "json", data = "<message>")]
+fn check_all_status(message: Json<DutyAction>) -> String {
+    check_all_team_status(message.team_name.clone())
+}
+
+#[options("/check_all_status")]
+fn options_check_all_status() -> &'static str {
+    ""
+}
+
 // CORS
 pub struct CORS;
 
@@ -231,7 +242,9 @@ fn rocket() -> _ {
             send_on_call,
             options_send_on_call,
             check_on_call,
-            options_check_on_call
+            options_check_on_call,
+            check_all_status,
+            options_check_all_status
         ],
     )
 }

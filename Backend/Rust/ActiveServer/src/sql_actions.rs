@@ -188,3 +188,29 @@ pub fn check_duty_status(username: String) -> String {
         .query_row(params![username], |row| row.get(0))
         .unwrap_or_default()
 }
+
+pub fn check_all_team_status(team_name: String) -> String {
+    let conn = Connection::open("database.db").unwrap();
+
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS user_status (
+            username TEXT NOT NULL,
+            team_name TEXT NOT NULL,
+            status TEXT NOT NULL
+        )",
+        [],
+    )
+    .unwrap();
+
+    let mut statement = conn
+        .prepare("SELECT username FROM user_status WHERE team_name = ?1")
+        .unwrap();
+
+    let usernames: Vec<String> = statement
+        .query_map([team_name], |row| row.get(0))
+        .unwrap()
+        .filter_map(Result::ok)
+        .collect();
+
+    usernames.join(", ")
+}
