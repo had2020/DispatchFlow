@@ -7,7 +7,7 @@ document.getElementById("Submit").addEventListener("click", function () {
   if (localStorage.getItem("is_user")) {
     window.location.href = "../user_pages/map.html";
   } else {
-    fetch("http://76.167.195.153:8000/send_signup", {
+    fetch("https://76.167.195.153:8000/send_signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

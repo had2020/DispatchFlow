@@ -50,7 +50,7 @@ document.getElementById("Send").addEventListener("click", function () {
 
   let status_data = "";
 
-  fetch("http://76.167.195.153:8000/send_chat_message", {
+  fetch("https://76.167.195.153:8000/send_chat_message", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
