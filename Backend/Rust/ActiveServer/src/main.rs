@@ -1,3 +1,4 @@
+use rocket::response::status;
 use rocket::serde::{json::Json, Deserialize};
 use rocket::{
     fairing::{Fairing, Info, Kind},
@@ -5,9 +6,15 @@ use rocket::{
     launch, options, post, routes, Request, Response,
 };
 
+use std::fs::OpenOptions;
+use std::io::Write;
+
 pub mod sql_actions;
 
-use sql_actions::{already_user, clear_user, create_team, create_user, is_user, join_team};
+use sql_actions::{
+    already_user, check_duty_status, clear_user, create_team, create_user, is_user, join_team,
+    set_duty_status,
+};
 
 #[derive(Deserialize)]
 #[serde(crate = "rocket::serde")]
@@ -24,6 +31,14 @@ struct TeamsAction {
     action: String,
     code: String,
     team_name: String,
+}
+
+#[derive(Deserialize)]
+#[serde(crate = "rocket::serde")]
+struct DutyAction {
+    user: String,
+    team_name: String,
+    status: String,
 }
 
 // Signup Route
@@ -121,13 +136,40 @@ struct UserDuty {
 */
 
 // Resister for call
-#[post("/get_on_call", format = "json", data = "<message>")]
-fn get_on_call(message: Json<TeamsAction>) -> String {
-    "no".to_string() //TODO do it in SQL
+#[post("/send_on_call", format = "json", data = "<message>")]
+fn send_on_call(message: Json<DutyAction>) -> String {
+    /*
+    let mut file = std::fs::OpenOptions::new()
+        .create(true)
+        .write(true)
+        .append(true)
+        .open("/on_duty_users.txt")
+        .unwrap();
+    writeln!(file, "{}", message.user).expect("Failed to write file");
+    */
+
+    set_duty_status(
+        message.user.clone(),
+        message.team_name.clone(),
+        message.status.clone(),
+    );
+
+    "good".to_string()
 }
 
-#[options("/get_on_call")]
-fn options_get_on_call() -> &'static str {
+#[options("/send_on_call")]
+fn options_send_on_call() -> &'static str {
+    ""
+}
+
+// Check for call
+#[post("/check_on_call", format = "json", data = "<message>")]
+fn check_on_call(message: Json<DutyAction>) -> String {
+    check_duty_status(message.user.clone())
+}
+
+#[options("/check_on_call")]
+fn options_check_on_call() -> &'static str {
     ""
 }
 
@@ -186,8 +228,10 @@ fn rocket() -> _ {
             options_create_team,
             post_join_team,
             options_join_team,
-            get_on_call,
-            options_get_on_call
+            send_on_call,
+            options_send_on_call,
+            check_on_call,
+            options_check_on_call
         ],
     )
 }

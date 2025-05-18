@@ -27,4 +27,47 @@ function error() {
 
 getLocation();
 
+if (localStorage.getItem("Duty") == "true") {
+  document.getElementById("duty_button").innerHTML =
+    "⚫️ Set to Off-Call Status";
+}
+
 // report for duty
+document.getElementById("duty_button").addEventListener("click", function () {
+  let new_status = "";
+  if (localStorage.getItem("Duty") == "true") {
+    new_status = "false";
+  } else {
+    new_status = "true";
+  }
+
+  fetch("http://localhost:8000/send_on_call", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      user: localStorage.getItem("User"),
+      team_name: localStorage.getItem("Pass"),
+      status: new_status,
+    }),
+  })
+    .then((response) => response.text())
+    .then((data) => {
+      status_data = data;
+
+      if (status_data == "good") {
+        if (localStorage.getItem("Duty") == "true") {
+          localStorage.setItem("Duty", "false");
+          document.getElementById("duty_button").innerHTML =
+            "🟢 Set to On-Call Status";
+        } else {
+          localStorage.setItem("Duty", "true");
+          document.getElementById("duty_button").innerHTML =
+            "⚫️ Set to Off-Call Status";
+        }
+      }
+
+      console.log(status_data);
+    });
+});

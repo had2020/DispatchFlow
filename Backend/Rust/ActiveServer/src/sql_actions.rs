@@ -140,3 +140,51 @@ pub fn join_team(username: String, password: String, code: String) -> String {
         .query_row(params![code], |row| row.get(0))
         .unwrap_or_default()
 }
+
+pub fn set_duty_status(username: String, team_name: String, status: String) {
+    let conn = Connection::open("database.db").unwrap();
+
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS user_status (
+            username TEXT NOT NULL,
+            team_name TEXT NOT NULL,
+            status TEXT NOT NULL
+        )",
+        [],
+    )
+    .unwrap();
+
+    conn.execute(
+        "DELETE FROM user_status WHERE username = ?1",
+        params![username],
+    )
+    .unwrap();
+
+    conn.execute(
+        "INSERT INTO user_status (username, team_name, status) VALUES (?1, ?2, ?3)",
+        params![username, team_name, status],
+    )
+    .unwrap();
+}
+
+pub fn check_duty_status(username: String) -> String {
+    let conn = Connection::open("database.db").unwrap();
+
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS user_status (
+            username TEXT NOT NULL,
+            team_name TEXT NOT NULL,
+            status TEXT NOT NULL
+        )",
+        [],
+    )
+    .unwrap();
+
+    let mut statement = conn
+        .prepare("SELECT username FROM user_status WHERE status = ?1")
+        .unwrap();
+
+    statement
+        .query_row(params![username], |row| row.get(0))
+        .unwrap_or_default()
+}
