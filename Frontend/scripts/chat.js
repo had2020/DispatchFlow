@@ -2,7 +2,7 @@ if (localStorage.getItem("In_team") == "false") {
   window.location.href = "../user_pages/teams.html";
 }
 
-fetch("http://76.167.195.153:8000/check_chat", {
+fetch("https://76.167.195.153:8000/check_chat", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
